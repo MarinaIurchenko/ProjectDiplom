@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+
+  mysql:
+    image: mysql:8.0.33
+    restart: always
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: yes
+      MYSQL_DATABASE: app
+      MYSQL_USER: user1
+      MYSQL_PASSWORD: 12345W
+    ports:
+      - '3306:3306'
+
+  node-app:
+      build: ./gate-simulator
+      ports:
+        - '9999:9999'
