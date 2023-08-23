@@ -43,9 +43,3 @@ out/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**
 !**/src/test/**
-
-### VS Code ###
-.vscode/
-
-### Mac OS ###
-.DS_Store
