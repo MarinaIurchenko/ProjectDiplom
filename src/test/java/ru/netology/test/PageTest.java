@@ -123,15 +123,6 @@ public class PageTest {
     }
 
     @Test
-    void paymentNegativeMonthOver12() {
-        val startPage = new PurchasePage();
-        val payment = startPage.clickPaymentPage();
-        payment.inputData(DataHelper.getCardMonthOver12());
-        payment.waitNotificationExpirationDateError();
-        assertEquals("0", SQLHelper.getOrderCount());
-    }
-
-    @Test
     void paymentNegativeMonth00() {
         val startPage = new PurchasePage();
         val payment = startPage.clickPaymentPage();
@@ -193,7 +184,22 @@ public class PageTest {
         payment.waitNotificationWrongFormat();
         assertEquals("0", SQLHelper.getOrderCount());
     }
-
+    @Test
+    void paymentNegativeHolderArabic() {
+        val startPage = new PurchasePage();
+        val payment = startPage.clickPaymentPage();
+        payment.inputData(DataHelper.getCardHolderArabic());
+        payment.waitNotificationWrongFormat();
+        assertEquals("0", SQLHelper.getOrderCount());
+    }
+    @Test
+    void creditNegativeHolderHieroglyph() {
+        val startPage = new PurchasePage();
+        val payment = startPage.clickCreditPage();
+        payment.inputData(DataHelper.getCardHolderHieroglyph());
+        payment.waitNotificationWrongFormat();
+        assertEquals("0", SQLHelper.getOrderCount());
+    }
     @Test
     void paymentNegativeOwnerWithNumbers() {
         val startPage = new PurchasePage();

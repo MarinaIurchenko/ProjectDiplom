@@ -123,19 +123,18 @@ public class CreditPageTest {
     }
 
     @Test
-    void creditNegativeMonthOver12() {
-        val startPage = new PurchasePage();
-        val payment = startPage.clickCreditPage();
-        payment.inputData(DataHelper.getCardMonthOver12());
-        payment.waitNotificationExpirationDateError();
-        assertEquals("0", SQLHelper.getOrderCount());
-    }
-
-    @Test
     void creditNegativeMonth00() {
         val startPage = new PurchasePage();
         val payment = startPage.clickCreditPage();
         payment.inputData(DataHelper.getCardMonth00ThisYear());
+        payment.waitNotificationExpirationDateError();
+        assertEquals("0", SQLHelper.getOrderCount());
+    }
+    @Test
+    void creditNegativeNonExistentMonth() {
+        val startPage = new PurchasePage();
+        val payment = startPage.clickCreditPage();
+        payment.inputData(DataHelper.getCardNonExistentMonth());
         payment.waitNotificationExpirationDateError();
         assertEquals("0", SQLHelper.getOrderCount());
     }
@@ -202,7 +201,22 @@ public class CreditPageTest {
         payment.waitNotificationWrongFormat();
         assertEquals("0", SQLHelper.getOrderCount());
     }
-
+    @Test
+    void creditNegativeHolderArabic() {
+        val startPage = new PurchasePage();
+        val payment = startPage.clickCreditPage();
+        payment.inputData(DataHelper.getCardHolderArabic());
+        payment.waitNotificationWrongFormat();
+        assertEquals("0", SQLHelper.getOrderCount());
+    }
+    @Test
+    void creditNegativeHolderHieroglyph() {
+        val startPage = new PurchasePage();
+        val payment = startPage.clickCreditPage();
+        payment.inputData(DataHelper.getCardHolderHieroglyph());
+        payment.waitNotificationWrongFormat();
+        assertEquals("0", SQLHelper.getOrderCount());
+    }
     @Test
     void creditNegativeOwnerWithSymbols() {
         val startPage = new PurchasePage();
