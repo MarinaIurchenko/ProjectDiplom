@@ -5,7 +5,7 @@
 1. Установить и запустить IntelliJ IDEA;
 2. Установить и запустить Docker Desktop;
 3. Установить и запустить DBeaver;
-4. Сделать `git clone` репозитория с Github [по ссылке](https://github.com/anggri29/qa-diploma);
+4. Сделать `git clone` репозитория с Github [по ссылке](https://github.com/MarinaIurchenko/ProjectDiplom);
 5. Открыть проект `qa-diploma` в IntelliJ IDEA;
 6. Создать соединение с MySQL в DBeaver;
 7. Создать соединение с PostgreSQL в DBeaver;
