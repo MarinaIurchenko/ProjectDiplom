@@ -1,73 +1,80 @@
 package ru.netology.page;
 
-import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import ru.netology.data.Card;
+
 import java.time.Duration;
 
-import static com.codeborne.selenide.CollectionCondition.size;
 import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Selenide.*;
 public class PaymentPage {
-    private SelenideElement heading = $$("h3").find(exactText("Оплата по карте"));
-    private SelenideElement cardNumberField = $(byText("Номер карты")).parent().$("[class=\"input__control\"]");
-    private SelenideElement monthField = $(byText("Месяц")).parent().$("[class=\"input__control\"]");
-    private SelenideElement yearField = $(byText("Год")).parent().$("[class=\"input__control\"]");
-    private SelenideElement cardHolderField = $(byText("Владелец")).parent().$("[class=\"input__control\"]");
-    private SelenideElement cvcField = $(byText("CVC/CVV")).parent().$("[class=\"input__control\"]");
-    private SelenideElement approvedOperation = $(byText(
-            "Операция одобрена Банком.")).parent().$("[class=\"notification__content\"]");
-    private SelenideElement failureOperation = $(byText(
-            "Ошибка! Банк отказал в проведении операции.")).parent().$("[class=\"notification__content\"]");
-    private SelenideElement wrongFormatError = $(byText("Неверный формат"));
-    private ElementsCollection wrongFormat4Error = $$(byText("Неверный формат"));
-    private SelenideElement cardExpirationDateError = $(byText("Неверно указан срок действия карты"));
-    private SelenideElement cardExpiredError = $(byText("Истёк срок действия карты"));
-    private SelenideElement requiredFieldError = $(byText("Поле обязательно для заполнения"));
-
-    private SelenideElement cancelField = $$("[class=\"icon-button__text\"]").first();
+    private SelenideElement heading = $$("h2").find(exactText("Путешествие дня"));
+    private SelenideElement debitButton = $$("button").find(exactText("Купить"));
+    private SelenideElement numberCard = $(byText("Номер карты")).parent().$("[class='input__control']");
+    private SelenideElement monthCard = $(byText("Месяц")).parent().$("[class='input__control']");
+    private SelenideElement yearCard = $(byText("Год")).parent().$("[class='input__control']");
+    private SelenideElement holderCard = $(byText("Владелец")).parent().$("[class='input__control']");
+    private SelenideElement cvvCard = $(byText("CVC/CVV")).parent().$("[class='input__control']");
+    private SelenideElement approvedStatus = $(byText("Операция одобрена Банком.")).parent().$("[class='notification__content']");
+    private SelenideElement declinedStatus = $(byText("Ошибка! Банк отказал в проведении операции.")).parent().$("[class='notification__content']");
+    private SelenideElement incorrectFormat = $(byText("Неверный формат"));
+    private SelenideElement cardExpirationError = $(byText("Неверно указан срок действия карты"));
+    private SelenideElement expired = $(byText("Истёк срок действия карты"));
+    private SelenideElement requiredField = $(byText("Поле обязательно для заполнения"));
     private SelenideElement continueButton = $$("button").find(exactText("Продолжить"));
 
-    public PaymentPage() {
+    public void debitCard() {
         heading.shouldBe(visible);
+        debitButton.click();
     }
 
-    public void inputData(Card card) {
-        cardNumberField.setValue(card.getCardNumber());
-        monthField.setValue(card.getMonth());
-        yearField.setValue(card.getYear());
-        cardHolderField.setValue(card.getCardHolder());
-        cvcField.setValue(card.getCvc());
+    public void setNumberCard(String number) {
+        numberCard.setValue(number);
+    }
+
+    public void setMonthCard(String month) {
+        monthCard.setValue(month);
+    }
+
+    public void setYearCard(String year) {
+        yearCard.setValue(year);
+    }
+
+    public void setHolderCard(String user) {
+        holderCard.setValue(user);
+    }
+
+    public void setCvvCard(String cvv) {
+        cvvCard.setValue(cvv);
+    }
+
+    public void clickButtonContinue() {
         continueButton.click();
     }
-    public void waitNotificationApproved() {
-        approvedOperation.shouldBe(visible, Duration.ofSeconds(15));
-        cancelField.click();
+
+    public void approvedStatus() {
+        approvedStatus.shouldBe(visible, Duration.ofSeconds(15));
     }
 
-    public void waitNotificationFailure() {
-        failureOperation.shouldBe(visible, Duration.ofSeconds(15));
+    public void declinedStatus() {
+        declinedStatus.shouldBe(visible, Duration.ofSeconds(15));
     }
 
-    public void waitNotificationWrongFormat() {
-        wrongFormatError.shouldBe(visible, Duration.ofSeconds(15));
+    public void incorrectFormat() {
+        incorrectFormat.shouldBe(visible);
     }
 
-    public void waitNotificationExpirationDateError() {
-        cardExpirationDateError.shouldBe(visible, Duration.ofSeconds(15));
+    public void expirationError() {
+        cardExpirationError.shouldBe(visible);
     }
 
-    public void waitNotificationExpiredError() {
-        cardExpiredError.shouldBe(visible, Duration.ofSeconds(15));
+    public void expired() {
+        expired.shouldBe(visible);
     }
-    public void waitNotificationRequiredError() {
-        requiredFieldError.shouldBe(visible, Duration.ofSeconds(15));
-    }
-    public void waitNotificationWrongFormat4Fields() {
-        wrongFormat4Error.shouldHave(size(4));
-        requiredFieldError.shouldBe(visible, Duration.ofSeconds(15));
+
+    public void requiredField() {
+        requiredField.shouldBe(visible);
     }
 }
+

@@ -2,246 +2,371 @@ package ru.netology.test;
 
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
-import lombok.val;
 import org.junit.jupiter.api.*;
 import ru.netology.data.DataHelper;
 import ru.netology.data.SQLHelper;
-import ru.netology.page.PurchasePage;
+import ru.netology.page.PaymentPage;
 
-import static com.codeborne.selenide.Selenide.open;
+
+import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static ru.netology.data.SQLHelper.getOrderCount;
+
+
 public class PageTest {
+    PaymentPage paymentPage = new PaymentPage();
     public static String url = System.getProperty("sut.url");
+
 
     @BeforeEach
     public void openPage() {
         open(url);
     }
 
-    @AfterEach
-    public void cleanBase() {
-        SQLHelper.clearDataBase();
-    }
-
     @BeforeAll
-    static void setUpAll() {
+    static void setAll() {
         SelenideLogger.addListener("allure", new AllureSelenide());
     }
 
     @AfterAll
-    static void tearDownAll() {
+    static void tearDown() {
         SelenideLogger.removeListener("allure");
     }
 
+    @AfterEach
+    public void cleanDataBase() {
+        SQLHelper.cleanDatabase();
+    }
+
     @Test
-    void paymentPositiveCardApproved() {
-        val startPage = new PurchasePage();
-        val payment = startPage.clickPaymentPage();
-        payment.inputData(DataHelper.getApprovedCard());
-        payment.waitNotificationApproved();
+    public void successfulPurchaseOne() {
+        paymentPage.debitCard();
+        paymentPage.setNumberCard(DataHelper.getApprovedCard());
+        paymentPage.setMonthCard(DataHelper.getMonth());
+        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setHolderCard(DataHelper.getHolder());
+        paymentPage.setCvvCard(DataHelper.getDigitsThree());
+        paymentPage.clickButtonContinue();
+        paymentPage.approvedStatus();
         assertEquals("APPROVED", SQLHelper.getPaymentStatus());
     }
-
     @Test
-    void paymentPositiveCardDeclined() {
-        val startPage = new PurchasePage();
-        val payment = startPage.clickPaymentPage();
-        payment.inputData(DataHelper.getDeclinedCard());
-        payment.waitNotificationFailure();
+    public void successfulPurchaseTwo() {
+        paymentPage.debitCard();
+        paymentPage.setNumberCard(DataHelper.getApprovedCard());
+        paymentPage.setMonthCard(DataHelper.getShiftedMonth());
+        paymentPage.setYearCard(DataHelper.getShiftedYear(3));
+        paymentPage.setHolderCard(DataHelper.getHolder());
+        paymentPage.setCvvCard(DataHelper.getDigitsThree());
+        paymentPage.clickButtonContinue();
+        paymentPage.approvedStatus();
+        assertEquals("APPROVED", SQLHelper.getPaymentStatus());
+    }
+    @Test
+    public void shouldUnsuccessfulPurchase() {
+        paymentPage.debitCard();
+        paymentPage.setNumberCard(DataHelper.getDeclinedCard());
+        paymentPage.setMonthCard(DataHelper.getMonth());
+        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setHolderCard(DataHelper.getHolder());
+        paymentPage.setCvvCard(DataHelper.getDigitsThree());
+        paymentPage.clickButtonContinue();
+        paymentPage.declinedStatus();
         assertEquals("DECLINED", SQLHelper.getPaymentStatus());
     }
+
     @Test
-    void paymentNegativeIfAllFieldsEmpty() {
-        val startPage = new PurchasePage();
-        val payment = startPage.clickPaymentPage();
-        payment.inputData(DataHelper.getEmptyCard());
-        payment.waitNotificationWrongFormat4Fields();
-        assertEquals("0", SQLHelper.getOrderCount());
+
+    public void numberEmpty() {
+        paymentPage.debitCard();
+        paymentPage.setMonthCard(DataHelper.getMonth());
+        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setHolderCard(DataHelper.getHolder());
+        paymentPage.setCvvCard(DataHelper.getDigitsThree());
+        paymentPage.clickButtonContinue();
+        paymentPage.incorrectFormat();
+        assertEquals(0, getOrderCount());
     }
 
     @Test
-    void paymentNegativeIfCardNumberEmpty() {
-        val startPage = new PurchasePage();
-        val payment = startPage.clickCreditPage();
-        payment.inputData(DataHelper.getCardNumberEmpty());
-        payment.waitNotificationWrongFormat();
-        assertEquals("0", SQLHelper.getOrderCount());
+    public void numberLessSixteenDigits() {
+        paymentPage.debitCard();
+        paymentPage.setNumberCard(DataHelper.getCardNumberLessThan16());
+        paymentPage.setMonthCard(DataHelper.getMonth());
+        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setHolderCard(DataHelper.getHolder());
+        paymentPage.setCvvCard(DataHelper.getDigitsThree());
+        paymentPage.clickButtonContinue();
+        paymentPage.incorrectFormat();
+        assertEquals(0, getOrderCount());
     }
 
     @Test
-    void paymentNegativeIfMonthEmpty() {
-        val startPage = new PurchasePage();
-        val payment = startPage.clickCreditPage();
-        payment.inputData(DataHelper.getMonthEmpty());
-        payment.waitNotificationWrongFormat();
-        assertEquals("0", SQLHelper.getOrderCount());
+    public void newCardNumber() {
+        paymentPage.debitCard();
+        paymentPage.setNumberCard(DataHelper.getNewCardNumber());
+        paymentPage.setMonthCard(DataHelper.getMonth());
+        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setHolderCard(DataHelper.getHolder());
+        paymentPage.setCvvCard(DataHelper.getDigitsThree());
+        paymentPage.clickButtonContinue();
+        paymentPage.declinedStatus();
+        assertEquals(0, getOrderCount());
     }
 
     @Test
-    void paymentNegativeIfYearEmpty() {
-        val startPage = new PurchasePage();
-        val payment = startPage.clickCreditPage();
-        payment.inputData(DataHelper.getYearEmpty());
-        payment.waitNotificationWrongFormat();
-        assertEquals("0", SQLHelper.getOrderCount());
+    public void monthEmpty() {
+        paymentPage.debitCard();
+        paymentPage.setNumberCard(DataHelper.getApprovedCard());
+        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setHolderCard(DataHelper.getHolder());
+        paymentPage.setCvvCard(DataHelper.getDigitsThree());
+        paymentPage.clickButtonContinue();
+        paymentPage.incorrectFormat();
+        assertEquals(0, getOrderCount());
     }
 
     @Test
-    void paymentNegativeIfCardHolderEmpty() {
-        val startPage = new PurchasePage();
-        val payment = startPage.clickCreditPage();
-        payment.inputData(DataHelper.getCardHolderEmpty());
-        payment.waitNotificationRequiredError();
-        assertEquals("0", SQLHelper.getOrderCount());
+    public void monthDigitOne() {
+        paymentPage.debitCard();
+        paymentPage.setNumberCard(DataHelper.getApprovedCard());
+        paymentPage.setMonthCard(DataHelper.getDigitOne());
+        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setHolderCard(DataHelper.getHolder());
+        paymentPage.setCvvCard(DataHelper.getDigitsThree());
+        paymentPage.clickButtonContinue();
+        paymentPage.incorrectFormat();
+        assertEquals(0, getOrderCount());
     }
 
     @Test
-    void paymentNegativeIfCVCEmpty() {
-        val startPage = new PurchasePage();
-        val payment = startPage.clickCreditPage();
-        payment.inputData(DataHelper.getCVCEmpty());
-        payment.waitNotificationWrongFormat();
-        assertEquals("0", SQLHelper.getOrderCount());
+    public void monthMoreTwelve() {
+        paymentPage.debitCard();
+        paymentPage.setNumberCard(DataHelper.getApprovedCard());
+        paymentPage.setMonthCard(DataHelper.getMonthMoreTwelve());
+        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setHolderCard(DataHelper.getHolder());
+        paymentPage.setCvvCard(DataHelper.getDigitsThree());
+        paymentPage.clickButtonContinue();
+        paymentPage.expirationError();
+        assertEquals(0, getOrderCount());
     }
 
     @Test
-    void paymentNegativeCardNumber15Symbols() {
-        val startPage = new PurchasePage();
-        val payment = startPage.clickPaymentPage();
-        payment.inputData(DataHelper.getNumberCard15Symbols());
-        payment.waitNotificationWrongFormat();
-        assertEquals("0", SQLHelper.getOrderCount());
+    public void monthZeroTwo() {
+        paymentPage.debitCard();
+        paymentPage.setNumberCard(DataHelper.getApprovedCard());
+        paymentPage.setMonthCard(DataHelper.getZeroTwo());
+        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setHolderCard(DataHelper.getHolder());
+        paymentPage.setCvvCard(DataHelper.getDigitsThree());
+        paymentPage.clickButtonContinue();
+        paymentPage.incorrectFormat();
+        assertEquals(0, getOrderCount());
     }
 
     @Test
-    void paymentNegativeMonth1() {
-        val startPage = new PurchasePage();
-        val payment = startPage.clickPaymentPage();
-        payment.inputData(DataHelper.getCardMonth1Symbol());
-        payment.waitNotificationWrongFormat();
-        assertEquals("0", SQLHelper.getOrderCount());
+    public void yearEmpty() {
+        paymentPage.debitCard();
+        paymentPage.setNumberCard(DataHelper.getApprovedCard());
+        paymentPage.setMonthCard(DataHelper.getMonth());
+        paymentPage.setHolderCard(DataHelper.getHolder());
+        paymentPage.setCvvCard(DataHelper.getDigitsThree());
+        paymentPage.clickButtonContinue();
+        paymentPage.incorrectFormat();
+        assertEquals(0, getOrderCount());
     }
 
     @Test
-    void paymentNegativeMonth00() {
-        val startPage = new PurchasePage();
-        val payment = startPage.clickPaymentPage();
-        payment.inputData(DataHelper.getCardMonth00ThisYear());
-        payment.waitNotificationExpirationDateError();
-        assertEquals("0", SQLHelper.getOrderCount());
+    public void yearDigitOne() {
+        paymentPage.debitCard();
+        paymentPage.setNumberCard(DataHelper.getApprovedCard());
+        paymentPage.setMonthCard(DataHelper.getMonth());
+        paymentPage.setYearCard(DataHelper.getDigitOne());
+        paymentPage.setHolderCard(DataHelper.getHolder());
+        paymentPage.setCvvCard(DataHelper.getDigitsThree());
+        paymentPage.clickButtonContinue();
+        paymentPage.incorrectFormat();
+        assertEquals(0, getOrderCount());
     }
 
     @Test
-    void paymentNegativeYear1() {
-        val startPage = new PurchasePage();
-        val payment = startPage.clickPaymentPage();
-        payment.inputData(DataHelper.getCardYear1Symbol());
-        payment.waitNotificationWrongFormat();
-        assertEquals("0", SQLHelper.getOrderCount());
+    public void yearLessThanThisYear() {
+        paymentPage.debitCard();
+        paymentPage.setNumberCard(DataHelper.getApprovedCard());
+        paymentPage.setMonthCard(DataHelper.getMonth());
+        paymentPage.setYearCard(DataHelper.getYearLessThanThisYear());
+        paymentPage.setHolderCard(DataHelper.getHolder());
+        paymentPage.setCvvCard(DataHelper.getDigitsThree());
+        paymentPage.clickButtonContinue();
+        paymentPage.expired();
+        assertEquals(0, getOrderCount());
     }
 
     @Test
-    void paymentNegativeYearBefore() {
-        val startPage = new PurchasePage();
-        val payment = startPage.clickPaymentPage();
-        payment.inputData(DataHelper.getCardYearUnder());
-        payment.waitNotificationExpiredError();
-        assertEquals("0", SQLHelper.getOrderCount());
+    public void yearZeroTwo() {
+        paymentPage.debitCard();
+        paymentPage.setNumberCard(DataHelper.getApprovedCard());
+        paymentPage.setMonthCard(DataHelper.getMonth());
+        paymentPage.setYearCard(DataHelper.getZeroTwo());
+        paymentPage.setHolderCard(DataHelper.getHolder());
+        paymentPage.setCvvCard(DataHelper.getDigitsThree());
+        paymentPage.clickButtonContinue();
+        paymentPage.expired();
+        assertEquals(0,getOrderCount());
+    }
+    @Test
+    public void holderEmpty() {
+        paymentPage.debitCard();
+        paymentPage.setNumberCard(DataHelper.getApprovedCard());
+        paymentPage.setMonthCard(DataHelper.getMonth());
+        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setCvvCard(DataHelper.getDigitsThree());
+        paymentPage.clickButtonContinue();
+        paymentPage.requiredField();
+        assertEquals(0, getOrderCount());
     }
 
     @Test
-    void paymentNegativeYearOver() {
-        val startPage = new PurchasePage();
-        val payment = startPage.clickPaymentPage();
-        payment.inputData(DataHelper.getCardYearOver());
-        payment.waitNotificationExpirationDateError();
-        assertEquals("0", SQLHelper.getOrderCount());
+    public void holderOneWord() {
+        paymentPage.debitCard();
+        paymentPage.setNumberCard(DataHelper.getApprovedCard());
+        paymentPage.setMonthCard(DataHelper.getMonth());
+        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setHolderCard(DataHelper.getHolderOneWord());
+        paymentPage.setCvvCard(DataHelper.getDigitsThree());
+        paymentPage.clickButtonContinue();
+        paymentPage.incorrectFormat();
+        assertEquals(0, getOrderCount());
     }
 
     @Test
-    void paymentNegativeYear00() {
-        val startPage = new PurchasePage();
-        val payment = startPage.clickPaymentPage();
-        payment.inputData(DataHelper.getCardYear00());
-        payment.waitNotificationExpiredError();
-        assertEquals("0", SQLHelper.getOrderCount());
+    public void holderCyrillic() {
+        paymentPage.debitCard();
+        paymentPage.setNumberCard(DataHelper.getApprovedCard());
+        paymentPage.setMonthCard(DataHelper.getMonth());
+        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setHolderCard(DataHelper.getHolderCyrillic());
+        paymentPage.setCvvCard(DataHelper.getDigitsThree());
+        paymentPage.clickButtonContinue();
+        paymentPage.incorrectFormat();
+        assertEquals(0, getOrderCount());
     }
 
     @Test
-    void paymentNegativeOwner1Word() {
-        val startPage = new PurchasePage();
-        val payment = startPage.clickPaymentPage();
-        payment.inputData(DataHelper.getCardHolder1Word());
-        payment.waitNotificationWrongFormat();
-        assertEquals("0", SQLHelper.getOrderCount());
+    public void holderArabic() {
+        paymentPage.debitCard();
+        paymentPage.setNumberCard(DataHelper.getApprovedCard());
+        paymentPage.setMonthCard(DataHelper.getMonth());
+        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setHolderCard(DataHelper.getHolderArabic());
+        paymentPage.setCvvCard(DataHelper.getDigitsThree());
+        paymentPage.clickButtonContinue();
+        paymentPage.incorrectFormat();
+        assertEquals(0, getOrderCount());
     }
 
     @Test
-    void paymentNegativeOwnerCyrillic() {
-        val startPage = new PurchasePage();
-        val payment = startPage.clickPaymentPage();
-        payment.inputData(DataHelper.getCardHolderCyrillic());
-        payment.waitNotificationWrongFormat();
-        assertEquals("0", SQLHelper.getOrderCount());
-    }
-    @Test
-    void paymentNegativeHolderArabic() {
-        val startPage = new PurchasePage();
-        val payment = startPage.clickPaymentPage();
-        payment.inputData(DataHelper.getCardHolderArabic());
-        payment.waitNotificationWrongFormat();
-        assertEquals("0", SQLHelper.getOrderCount());
-    }
-    @Test
-    void creditNegativeHolderHieroglyph() {
-        val startPage = new PurchasePage();
-        val payment = startPage.clickCreditPage();
-        payment.inputData(DataHelper.getCardHolderHieroglyph());
-        payment.waitNotificationWrongFormat();
-        assertEquals("0", SQLHelper.getOrderCount());
-    }
-    @Test
-    void paymentNegativeOwnerWithNumbers() {
-        val startPage = new PurchasePage();
-        val payment = startPage.clickPaymentPage();
-        payment.inputData(DataHelper.getCardHolderNumeric());
-        payment.waitNotificationWrongFormat();
-        assertEquals("0", SQLHelper.getOrderCount());
+    public void holderHieroglyph() {
+        paymentPage.debitCard();
+        paymentPage.setNumberCard(DataHelper.getApprovedCard());
+        paymentPage.setMonthCard(DataHelper.getMonth());
+        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setHolderCard(DataHelper.getHolderHieroglyph());
+        paymentPage.setCvvCard(DataHelper.getDigitsThree());
+        paymentPage.clickButtonContinue();
+        paymentPage.incorrectFormat();
+        assertEquals(0, getOrderCount());
     }
 
     @Test
-    void paymentNegativeOwnerWithSymbols() {
-        val startPage = new PurchasePage();
-        val payment = startPage.clickPaymentPage();
-        payment.inputData(DataHelper.getCardHolderWithSymbols());
-        payment.waitNotificationWrongFormat();
-        assertEquals("0", SQLHelper.getOrderCount());
+    public void holderWithDigits() {
+        paymentPage.debitCard();
+        paymentPage.setNumberCard(DataHelper.getApprovedCard());
+        paymentPage.setMonthCard(DataHelper.getMonth());
+        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setHolderCard(DataHelper.getHolderWithNumbers());
+        paymentPage.setCvvCard(DataHelper.getDigitsThree());
+        paymentPage.clickButtonContinue();
+        paymentPage.incorrectFormat();
+        assertEquals(0, getOrderCount());
     }
 
     @Test
-    void paymentNegativeCVC1() {
-        val startPage = new PurchasePage();
-        val payment = startPage.clickPaymentPage();
-        payment.inputData(DataHelper.getCvс1Symbol());
-        payment.waitNotificationWrongFormat();
-        assertEquals("0", SQLHelper.getOrderCount());
+    public void holderWithInvalidSymbol() {
+        paymentPage.debitCard();
+        paymentPage.setNumberCard(DataHelper.getApprovedCard());
+        paymentPage.setMonthCard(DataHelper.getMonth());
+        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setHolderCard(DataHelper.getHolderWithInvalidSymbol());
+        paymentPage.setCvvCard(DataHelper.getDigitsThree());
+        paymentPage.clickButtonContinue();
+        paymentPage.incorrectFormat();
+        assertEquals(0, getOrderCount());
     }
 
     @Test
-    void paymentNegativeCVC2() {
-        val startPage = new PurchasePage();
-        val payment = startPage.clickPaymentPage();
-        payment.inputData(DataHelper.getCvс2Symbols());
-        payment.waitNotificationWrongFormat();
-        assertEquals("0", SQLHelper.getOrderCount());
+    public void cvvEmpty() {
+        paymentPage.debitCard();
+        paymentPage.setNumberCard(DataHelper.getApprovedCard());
+        paymentPage.setMonthCard(DataHelper.getMonth());
+        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setHolderCard(DataHelper.getHolder());
+        paymentPage.setCvvCard(DataHelper.getDigitsThree());
+        paymentPage.clickButtonContinue();
+        paymentPage.incorrectFormat();
+        assertEquals(0, getOrderCount());
     }
 
     @Test
-    void paymentNegativeNotInDataBase() {
-        val startPage = new PurchasePage();
-        val payment = startPage.clickPaymentPage();
-        payment.inputData(DataHelper.getCardNotInDatabase());
-        payment.waitNotificationFailure();
-        assertEquals("0", SQLHelper.getOrderCount());
+    public void cvvDigitOne() {
+        paymentPage.debitCard();
+        paymentPage.setNumberCard(DataHelper.getApprovedCard());
+        paymentPage.setMonthCard(DataHelper.getMonth());
+        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setHolderCard(DataHelper.getHolder());
+        paymentPage.setCvvCard(DataHelper.getDigitOne());
+        paymentPage.clickButtonContinue();
+        paymentPage.incorrectFormat();
+        assertEquals(0, getOrderCount());
+    }
+
+    @Test
+    public void cvvDigitsTwo() {
+        paymentPage.debitCard();
+        paymentPage.setNumberCard(DataHelper.getApprovedCard());
+        paymentPage.setMonthCard(DataHelper.getMonth());
+        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setHolderCard(DataHelper.getHolder());
+        paymentPage.setCvvCard(DataHelper.getDigitsTwo());
+        paymentPage.clickButtonContinue();
+        paymentPage.incorrectFormat();
+        assertEquals(0, getOrderCount());
+    }
+
+    @Test
+    public void cvvZeroThree() {
+        paymentPage.debitCard();
+        paymentPage.setNumberCard(DataHelper.getApprovedCard());
+        paymentPage.setMonthCard(DataHelper.getMonth());
+        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setHolderCard(DataHelper.getHolder());
+        paymentPage.setCvvCard(DataHelper.getZeroThree());
+        paymentPage.clickButtonContinue();
+        paymentPage.incorrectFormat();
+        assertEquals(0, getOrderCount());
+    }
+
+    @Test
+    public void notInDatabas() {
+        paymentPage.debitCard();
+        paymentPage.setNumberCard(DataHelper.getNotInDatabase());
+        paymentPage.setMonthCard(DataHelper.getMonth());
+        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setHolderCard(DataHelper.getHolder());
+        paymentPage.setCvvCard(DataHelper.getDigitsThree());
+        paymentPage.clickButtonContinue();
+        paymentPage.incorrectFormat();
+        assertEquals(0, getOrderCount());
     }
 }
