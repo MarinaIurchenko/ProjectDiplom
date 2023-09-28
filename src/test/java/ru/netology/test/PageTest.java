@@ -43,7 +43,7 @@ public class PageTest {
         paymentPage.debitCard();
         paymentPage.setNumberCard(DataHelper.getApprovedCard());
         paymentPage.setMonthCard(DataHelper.getMonth());
-        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setYearCard(DataHelper.getShiftedYear(2));
         paymentPage.setHolderCard(DataHelper.getHolder());
         paymentPage.setCvvCard(DataHelper.getDigitsThree());
         paymentPage.clickButtonContinue();
@@ -67,7 +67,7 @@ public class PageTest {
         paymentPage.debitCard();
         paymentPage.setNumberCard(DataHelper.getDeclinedCard());
         paymentPage.setMonthCard(DataHelper.getMonth());
-        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setYearCard(DataHelper.getShiftedYear(3));
         paymentPage.setHolderCard(DataHelper.getHolder());
         paymentPage.setCvvCard(DataHelper.getDigitsThree());
         paymentPage.clickButtonContinue();
@@ -80,7 +80,7 @@ public class PageTest {
     public void numberEmpty() {
         paymentPage.debitCard();
         paymentPage.setMonthCard(DataHelper.getMonth());
-        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setYearCard(DataHelper.getShiftedYear(3));
         paymentPage.setHolderCard(DataHelper.getHolder());
         paymentPage.setCvvCard(DataHelper.getDigitsThree());
         paymentPage.clickButtonContinue();
@@ -93,7 +93,7 @@ public class PageTest {
         paymentPage.debitCard();
         paymentPage.setNumberCard(DataHelper.getCardNumberLessThan16());
         paymentPage.setMonthCard(DataHelper.getMonth());
-        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setYearCard(DataHelper.getShiftedYear(3));
         paymentPage.setHolderCard(DataHelper.getHolder());
         paymentPage.setCvvCard(DataHelper.getDigitsThree());
         paymentPage.clickButtonContinue();
@@ -106,7 +106,7 @@ public class PageTest {
         paymentPage.debitCard();
         paymentPage.setNumberCard(DataHelper.getNewCardNumber());
         paymentPage.setMonthCard(DataHelper.getMonth());
-        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setYearCard(DataHelper.getShiftedYear(3));
         paymentPage.setHolderCard(DataHelper.getHolder());
         paymentPage.setCvvCard(DataHelper.getDigitsThree());
         paymentPage.clickButtonContinue();
@@ -118,7 +118,7 @@ public class PageTest {
     public void monthEmpty() {
         paymentPage.debitCard();
         paymentPage.setNumberCard(DataHelper.getApprovedCard());
-        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setYearCard(DataHelper.getShiftedYear(3));
         paymentPage.setHolderCard(DataHelper.getHolder());
         paymentPage.setCvvCard(DataHelper.getDigitsThree());
         paymentPage.clickButtonContinue();
@@ -131,7 +131,7 @@ public class PageTest {
         paymentPage.debitCard();
         paymentPage.setNumberCard(DataHelper.getApprovedCard());
         paymentPage.setMonthCard(DataHelper.getDigitOne());
-        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setYearCard(DataHelper.getShiftedYear(3));
         paymentPage.setHolderCard(DataHelper.getHolder());
         paymentPage.setCvvCard(DataHelper.getDigitsThree());
         paymentPage.clickButtonContinue();
@@ -144,7 +144,7 @@ public class PageTest {
         paymentPage.debitCard();
         paymentPage.setNumberCard(DataHelper.getApprovedCard());
         paymentPage.setMonthCard(DataHelper.getMonthMoreTwelve());
-        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setYearCard(DataHelper.getShiftedYear(3));
         paymentPage.setHolderCard(DataHelper.getHolder());
         paymentPage.setCvvCard(DataHelper.getDigitsThree());
         paymentPage.clickButtonContinue();
@@ -157,7 +157,7 @@ public class PageTest {
         paymentPage.debitCard();
         paymentPage.setNumberCard(DataHelper.getApprovedCard());
         paymentPage.setMonthCard(DataHelper.getZeroTwo());
-        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setYearCard(DataHelper.getShiftedYear(3));
         paymentPage.setHolderCard(DataHelper.getHolder());
         paymentPage.setCvvCard(DataHelper.getDigitsThree());
         paymentPage.clickButtonContinue();
@@ -195,7 +195,7 @@ public class PageTest {
         paymentPage.debitCard();
         paymentPage.setNumberCard(DataHelper.getApprovedCard());
         paymentPage.setMonthCard(DataHelper.getMonth());
-        paymentPage.setYearCard(DataHelper.getYearLessThanThisYear());
+        paymentPage.setYearCard(DataHelper.getShiftedYear(-2));
         paymentPage.setHolderCard(DataHelper.getHolder());
         paymentPage.setCvvCard(DataHelper.getDigitsThree());
         paymentPage.clickButtonContinue();
@@ -220,7 +220,7 @@ public class PageTest {
         paymentPage.debitCard();
         paymentPage.setNumberCard(DataHelper.getApprovedCard());
         paymentPage.setMonthCard(DataHelper.getMonth());
-        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setYearCard(DataHelper.getShiftedYear(3));
         paymentPage.setCvvCard(DataHelper.getDigitsThree());
         paymentPage.clickButtonContinue();
         paymentPage.requiredField();
@@ -232,7 +232,7 @@ public class PageTest {
         paymentPage.debitCard();
         paymentPage.setNumberCard(DataHelper.getApprovedCard());
         paymentPage.setMonthCard(DataHelper.getMonth());
-        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setYearCard(DataHelper.getShiftedYear(3));
         paymentPage.setHolderCard(DataHelper.getHolderOneWord());
         paymentPage.setCvvCard(DataHelper.getDigitsThree());
         paymentPage.clickButtonContinue();
@@ -245,7 +245,7 @@ public class PageTest {
         paymentPage.debitCard();
         paymentPage.setNumberCard(DataHelper.getApprovedCard());
         paymentPage.setMonthCard(DataHelper.getMonth());
-        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setYearCard(DataHelper.getShiftedYear(3));
         paymentPage.setHolderCard(DataHelper.getHolderCyrillic());
         paymentPage.setCvvCard(DataHelper.getDigitsThree());
         paymentPage.clickButtonContinue();
@@ -258,7 +258,7 @@ public class PageTest {
         paymentPage.debitCard();
         paymentPage.setNumberCard(DataHelper.getApprovedCard());
         paymentPage.setMonthCard(DataHelper.getMonth());
-        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setYearCard(DataHelper.getShiftedYear(3));
         paymentPage.setHolderCard(DataHelper.getHolderArabic());
         paymentPage.setCvvCard(DataHelper.getDigitsThree());
         paymentPage.clickButtonContinue();
@@ -271,7 +271,7 @@ public class PageTest {
         paymentPage.debitCard();
         paymentPage.setNumberCard(DataHelper.getApprovedCard());
         paymentPage.setMonthCard(DataHelper.getMonth());
-        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setYearCard(DataHelper.getShiftedYear(3));
         paymentPage.setHolderCard(DataHelper.getHolderHieroglyph());
         paymentPage.setCvvCard(DataHelper.getDigitsThree());
         paymentPage.clickButtonContinue();
@@ -284,7 +284,7 @@ public class PageTest {
         paymentPage.debitCard();
         paymentPage.setNumberCard(DataHelper.getApprovedCard());
         paymentPage.setMonthCard(DataHelper.getMonth());
-        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setYearCard(DataHelper.getShiftedYear(3));
         paymentPage.setHolderCard(DataHelper.getHolderWithNumbers());
         paymentPage.setCvvCard(DataHelper.getDigitsThree());
         paymentPage.clickButtonContinue();
@@ -297,7 +297,7 @@ public class PageTest {
         paymentPage.debitCard();
         paymentPage.setNumberCard(DataHelper.getApprovedCard());
         paymentPage.setMonthCard(DataHelper.getMonth());
-        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setYearCard(DataHelper.getShiftedYear(3));
         paymentPage.setHolderCard(DataHelper.getHolderWithInvalidSymbol());
         paymentPage.setCvvCard(DataHelper.getDigitsThree());
         paymentPage.clickButtonContinue();
@@ -310,7 +310,7 @@ public class PageTest {
         paymentPage.debitCard();
         paymentPage.setNumberCard(DataHelper.getApprovedCard());
         paymentPage.setMonthCard(DataHelper.getMonth());
-        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setYearCard(DataHelper.getShiftedYear(3));
         paymentPage.setHolderCard(DataHelper.getHolder());
         paymentPage.setCvvCard(DataHelper.getDigitsThree());
         paymentPage.clickButtonContinue();
@@ -323,7 +323,7 @@ public class PageTest {
         paymentPage.debitCard();
         paymentPage.setNumberCard(DataHelper.getApprovedCard());
         paymentPage.setMonthCard(DataHelper.getMonth());
-        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setYearCard(DataHelper.getShiftedYear(3));
         paymentPage.setHolderCard(DataHelper.getHolder());
         paymentPage.setCvvCard(DataHelper.getDigitOne());
         paymentPage.clickButtonContinue();
@@ -336,7 +336,7 @@ public class PageTest {
         paymentPage.debitCard();
         paymentPage.setNumberCard(DataHelper.getApprovedCard());
         paymentPage.setMonthCard(DataHelper.getMonth());
-        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setYearCard(DataHelper.getShiftedYear(3));
         paymentPage.setHolderCard(DataHelper.getHolder());
         paymentPage.setCvvCard(DataHelper.getDigitsTwo());
         paymentPage.clickButtonContinue();
@@ -349,7 +349,7 @@ public class PageTest {
         paymentPage.debitCard();
         paymentPage.setNumberCard(DataHelper.getApprovedCard());
         paymentPage.setMonthCard(DataHelper.getMonth());
-        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setYearCard(DataHelper.getShiftedYear(3));
         paymentPage.setHolderCard(DataHelper.getHolder());
         paymentPage.setCvvCard(DataHelper.getZeroThree());
         paymentPage.clickButtonContinue();
@@ -362,7 +362,7 @@ public class PageTest {
         paymentPage.debitCard();
         paymentPage.setNumberCard(DataHelper.getNotInDatabase());
         paymentPage.setMonthCard(DataHelper.getMonth());
-        paymentPage.setYearCard(DataHelper.getYear());
+        paymentPage.setYearCard(DataHelper.getShiftedYear(3));
         paymentPage.setHolderCard(DataHelper.getHolder());
         paymentPage.setCvvCard(DataHelper.getDigitsThree());
         paymentPage.clickButtonContinue();

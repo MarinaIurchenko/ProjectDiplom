@@ -15,40 +15,17 @@ public class DataHelper {
     }
 
     public static String getApprovedCard() {
-        String cardNumber = "4444 4444 4444 4441";
-        return cardNumber;
+        return "4444 4444 4444 4441";
     }
 
     public static String getDeclinedCard() {
-        String cardNumber = "4444 4444 4444 4442";
-        return cardNumber;
+        return "4444 4444 4444 4442";
     }
     public static String getCardNumberLessThan16() {
         return "4444 4444 4444 444";
     }
     public static String getNewCardNumber() {
         return faker.numerify("#### #### #### ####");
-    }
-
-
-    public static String generateRandomCardNumber() {
-        return faker.numerify("#### #### #### ####");
-    }
-
-    public static String generateRandomMonth() {
-        return faker.numerify("##");
-    }
-
-    public static String generateRandomYear() {
-        return faker.numerify("##");
-    }
-
-    public static String generateRandomName() {
-        return faker.name().fullName();
-    }
-
-    public static String generateRandomCode() {
-        return faker.numerify("###");
     }
 
     public static String getDigitOne() {
@@ -78,7 +55,7 @@ public class DataHelper {
     }
 
     public static String getShiftedYear(int yearCount) {
-        return LocalDate.now().plusYears(yearCount).format(DateTimeFormatter.ofPattern("YY"));
+        return LocalDate.now().plusYears(yearCount).format(DateTimeFormatter.ofPattern("yy"));
     }
 
     public static String getMonth() {
@@ -92,17 +69,6 @@ public class DataHelper {
         return String.format("%02d", moreMonth % 100);
     }
 
-    public static String getYear() {
-        LocalDate currentData = LocalDate.now();
-        LocalDate currentYear = currentData.plusYears(5);
-        return currentYear.format(DateTimeFormatter.ofPattern("YY"));
-    }
-
-    public static String getYearLessThanThisYear() {
-        LocalDate currentData = LocalDate.now();
-        LocalDate currentYear = currentData.minusYears(1);
-        return currentYear.format(DateTimeFormatter.ofPattern("YY"));
-    }
 
     public static String getHolder() {
         return faker.name().firstName() + faker.name().lastName();
@@ -127,11 +93,11 @@ public class DataHelper {
 
 
     public static String getHolderArabic() {
-        return faker.name() + "سميرنوفا ماريا";
+        return  "سميرنوفا ماريا";
     }
 
     public static String getHolderHieroglyph() {
-        return faker.name() + "斯米爾諾瓦瑪麗亞";
+        return  "斯米爾諾瓦瑪麗亞";
 
     }
 

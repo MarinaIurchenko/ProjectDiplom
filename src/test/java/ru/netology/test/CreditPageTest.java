@@ -40,7 +40,7 @@ public class CreditPageTest {
         creditPage.creditCard();
         creditPage.setNumberCard(DataHelper.getApprovedCard());
         creditPage.setMonthCard(DataHelper.getMonth());
-        creditPage.setYearCard(DataHelper.getYear());
+        creditPage.setYearCard(DataHelper.getShiftedYear(4));
         creditPage.setHolderCard(DataHelper.getHolder());
         creditPage.setCvvCard(DataHelper.getDigitsThree());
         creditPage.clickButtonContinue();
@@ -52,7 +52,7 @@ public class CreditPageTest {
         creditPage.creditCard();
         creditPage.setNumberCard(DataHelper.getApprovedCard());
         creditPage.setMonthCard(DataHelper.getShiftedMonth());
-        creditPage.setYearCard(DataHelper.getShiftedYear(5));
+        creditPage.setYearCard(DataHelper.getShiftedYear(2));
         creditPage.setHolderCard(DataHelper.getHolder());
         creditPage.setCvvCard(DataHelper.getDigitsThree());
         creditPage.clickButtonContinue();
@@ -65,7 +65,7 @@ public class CreditPageTest {
         creditPage.creditCard();
         creditPage.setNumberCard(DataHelper.getDeclinedCard());
         creditPage.setMonthCard(DataHelper.getMonth());
-        creditPage.setYearCard(DataHelper.getYear());
+        creditPage.setYearCard(DataHelper.getShiftedYear(2));
         creditPage.setHolderCard(DataHelper.getHolder());
         creditPage.setCvvCard(DataHelper.getDigitsThree());
         creditPage.clickButtonContinue();
@@ -78,7 +78,7 @@ public class CreditPageTest {
     public void numberEmpty() {
         creditPage.creditCard();
         creditPage.setMonthCard(DataHelper.getMonth());
-        creditPage.setYearCard(DataHelper.getYear());
+        creditPage.setYearCard(DataHelper.getShiftedYear(2));
         creditPage.setHolderCard(DataHelper.getHolder());
         creditPage.setCvvCard(DataHelper.getDigitsThree());
         creditPage.clickButtonContinue();
@@ -91,12 +91,12 @@ public class CreditPageTest {
         creditPage.creditCard();
         creditPage.setNumberCard(DataHelper.getCardNumberLessThan16());
         creditPage.setMonthCard(DataHelper.getMonth());
-        creditPage.setYearCard(DataHelper.getYear());
+        creditPage.setYearCard(DataHelper.getShiftedYear(2));
         creditPage.setHolderCard(DataHelper.getHolder());
         creditPage.setCvvCard(DataHelper.getDigitsThree());
         creditPage.clickButtonContinue();
         creditPage.incorrectFormat();
-        assertEquals(0, SQLHelper.getCreditStatus());
+        assertEquals(0, getOrderCount());
     }
 
     @Test
@@ -104,7 +104,7 @@ public class CreditPageTest {
         creditPage.creditCard();
         creditPage.setNumberCard(DataHelper.getNewCardNumber());
         creditPage.setMonthCard(DataHelper.getMonth());
-        creditPage.setYearCard(DataHelper.getYear());
+        creditPage.setYearCard(DataHelper.getShiftedYear(2));
         creditPage.setHolderCard(DataHelper.getHolder());
         creditPage.setCvvCard(DataHelper.getDigitsThree());
         creditPage.clickButtonContinue();
@@ -116,7 +116,7 @@ public class CreditPageTest {
     public void monthEmpty() {
         creditPage.creditCard();
         creditPage.setNumberCard(DataHelper.getApprovedCard());
-        creditPage.setYearCard(DataHelper.getYear());
+        creditPage.setYearCard(DataHelper.getShiftedYear(2));
         creditPage.setHolderCard(DataHelper.getHolder());
         creditPage.setCvvCard(DataHelper.getDigitsThree());
         creditPage.clickButtonContinue();
@@ -129,7 +129,7 @@ public class CreditPageTest {
         creditPage.creditCard();
         creditPage.setNumberCard(DataHelper.getApprovedCard());
         creditPage.setMonthCard(DataHelper.getDigitOne());
-        creditPage.setYearCard(DataHelper.getYear());
+        creditPage.setYearCard(DataHelper.getShiftedYear(2));
         creditPage.setHolderCard(DataHelper.getHolder());
         creditPage.setCvvCard(DataHelper.getDigitsThree());
         creditPage.clickButtonContinue();
@@ -142,7 +142,7 @@ public class CreditPageTest {
         creditPage.creditCard();
         creditPage.setNumberCard(DataHelper.getApprovedCard());
         creditPage.setMonthCard(DataHelper.getMonthMoreTwelve());
-        creditPage.setYearCard(DataHelper.getYear());
+        creditPage.setYearCard(DataHelper.getShiftedYear(2));
         creditPage.setHolderCard(DataHelper.getHolder());
         creditPage.setCvvCard(DataHelper.getDigitsThree());
         creditPage.clickButtonContinue();
@@ -155,12 +155,12 @@ public class CreditPageTest {
         creditPage.creditCard();
         creditPage.setNumberCard(DataHelper.getApprovedCard());
         creditPage.setMonthCard(DataHelper.getZeroTwo());
-        creditPage.setYearCard(DataHelper.getYear());
+        creditPage.setYearCard(DataHelper.getShiftedYear(2));
         creditPage.setHolderCard(DataHelper.getHolder());
         creditPage.setCvvCard(DataHelper.getDigitsThree());
         creditPage.clickButtonContinue();
         creditPage.incorrectFormat();
-        assertEquals(0, SQLHelper.getCreditStatus());
+        assertEquals(0, getOrderCount());
     }
 
     @Test
@@ -193,7 +193,7 @@ public class CreditPageTest {
         creditPage.creditCard();
         creditPage.setNumberCard(DataHelper.getApprovedCard());
         creditPage.setMonthCard(DataHelper.getMonth());
-        creditPage.setYearCard(DataHelper.getYearLessThanThisYear());
+        creditPage.setYearCard(DataHelper.getShiftedYear(-1));
         creditPage.setHolderCard(DataHelper.getHolder());
         creditPage.setCvvCard(DataHelper.getDigitsThree());
         creditPage.clickButtonContinue();
@@ -219,7 +219,7 @@ public class CreditPageTest {
         creditPage.creditCard();
         creditPage.setNumberCard(DataHelper.getApprovedCard());
         creditPage.setMonthCard(DataHelper.getMonth());
-        creditPage.setYearCard(DataHelper.getYear());
+        creditPage.setYearCard(DataHelper.getShiftedYear(2));
         creditPage.setCvvCard(DataHelper.getDigitsThree());
         creditPage.clickButtonContinue();
         creditPage.requiredField();
@@ -231,7 +231,7 @@ public class CreditPageTest {
         creditPage.creditCard();
         creditPage.setNumberCard(DataHelper.getApprovedCard());
         creditPage.setMonthCard(DataHelper.getMonth());
-        creditPage.setYearCard(DataHelper.getYear());
+        creditPage.setYearCard(DataHelper.getShiftedYear(2));
         creditPage.setHolderCard(DataHelper.getHolderOneWord());
         creditPage.setCvvCard(DataHelper.getDigitsThree());
         creditPage.clickButtonContinue();
@@ -244,7 +244,7 @@ public class CreditPageTest {
         creditPage.creditCard();
         creditPage.setNumberCard(DataHelper.getApprovedCard());
         creditPage.setMonthCard(DataHelper.getMonth());
-        creditPage.setYearCard(DataHelper.getYear());
+        creditPage.setYearCard(DataHelper.getShiftedYear(2));
         creditPage.setHolderCard(DataHelper.getHolderCyrillic());
         creditPage.setCvvCard(DataHelper.getDigitsThree());
         creditPage.clickButtonContinue();
@@ -256,7 +256,7 @@ public class CreditPageTest {
         creditPage.creditCard();
         creditPage.setNumberCard(DataHelper.getApprovedCard());
         creditPage.setMonthCard(DataHelper.getMonth());
-        creditPage.setYearCard(DataHelper.getYear());
+        creditPage.setYearCard(DataHelper.getShiftedYear(2));
         creditPage.setHolderCard(DataHelper.getHolderArabic());
         creditPage.setCvvCard(DataHelper.getDigitsThree());
         creditPage.clickButtonContinue();
@@ -268,7 +268,7 @@ public class CreditPageTest {
         creditPage.creditCard();
         creditPage.setNumberCard(DataHelper.getApprovedCard());
         creditPage.setMonthCard(DataHelper.getMonth());
-        creditPage.setYearCard(DataHelper.getYear());
+        creditPage.setYearCard(DataHelper.getShiftedYear(2));
         creditPage.setHolderCard(DataHelper.getHolderHieroglyph());
         creditPage.setCvvCard(DataHelper.getDigitsThree());
         creditPage.clickButtonContinue();
@@ -280,7 +280,7 @@ public class CreditPageTest {
         creditPage.creditCard();
         creditPage.setNumberCard(DataHelper.getApprovedCard());
         creditPage.setMonthCard(DataHelper.getMonth());
-        creditPage.setYearCard(DataHelper.getYear());
+        creditPage.setYearCard(DataHelper.getShiftedYear(2));
         creditPage.setHolderCard(DataHelper.getHolderWithNumbers());
         creditPage.setCvvCard(DataHelper.getDigitsThree());
         creditPage.clickButtonContinue();
@@ -293,7 +293,7 @@ public class CreditPageTest {
         creditPage.creditCard();
         creditPage.setNumberCard(DataHelper.getApprovedCard());
         creditPage.setMonthCard(DataHelper.getMonth());
-        creditPage.setYearCard(DataHelper.getYear());
+        creditPage.setYearCard(DataHelper.getShiftedYear(2));
         creditPage.setHolderCard(DataHelper.getHolderWithInvalidSymbol());
         creditPage.setCvvCard(DataHelper.getDigitsThree());
         creditPage.clickButtonContinue();
@@ -306,7 +306,7 @@ public class CreditPageTest {
         creditPage.creditCard();
         creditPage.setNumberCard(DataHelper.getApprovedCard());
         creditPage.setMonthCard(DataHelper.getMonth());
-        creditPage.setYearCard(DataHelper.getYear());
+        creditPage.setYearCard(DataHelper.getShiftedYear(2));
         creditPage.setHolderCard(DataHelper.getHolder());
         creditPage.setCvvCard(DataHelper.getDigitsThree());
         creditPage.clickButtonContinue();
@@ -319,7 +319,7 @@ public class CreditPageTest {
         creditPage.creditCard();
         creditPage.setNumberCard(DataHelper.getApprovedCard());
         creditPage.setMonthCard(DataHelper.getMonth());
-        creditPage.setYearCard(DataHelper.getYear());
+        creditPage.setYearCard(DataHelper.getShiftedYear(2));
         creditPage.setHolderCard(DataHelper.getHolder());
         creditPage.setCvvCard(DataHelper.getDigitOne());
         creditPage.clickButtonContinue();
@@ -332,7 +332,7 @@ public class CreditPageTest {
         creditPage.creditCard();
         creditPage.setNumberCard(DataHelper.getApprovedCard());
         creditPage.setMonthCard(DataHelper.getMonth());
-        creditPage.setYearCard(DataHelper.getYear());
+        creditPage.setYearCard(DataHelper.getShiftedYear(2));
         creditPage.setHolderCard(DataHelper.getHolder());
         creditPage.setCvvCard(DataHelper.getDigitsTwo());
         creditPage.clickButtonContinue();
@@ -345,7 +345,7 @@ public class CreditPageTest {
         creditPage.creditCard();
         creditPage.setNumberCard(DataHelper.getApprovedCard());
         creditPage.setMonthCard(DataHelper.getMonth());
-        creditPage.setYearCard(DataHelper.getYear());
+        creditPage.setYearCard(DataHelper.getShiftedYear(2));
         creditPage.setHolderCard(DataHelper.getHolder());
         creditPage.setCvvCard(DataHelper.getZeroThree());
         creditPage.clickButtonContinue();
@@ -357,7 +357,7 @@ public class CreditPageTest {
         creditPage.creditCard();
         creditPage.setNumberCard(DataHelper.getNotInDatabase());
         creditPage.setMonthCard(DataHelper.getMonth());
-        creditPage.setYearCard(DataHelper.getYear());
+        creditPage.setYearCard(DataHelper.getShiftedYear(2));
         creditPage.setHolderCard(DataHelper.getHolder());
         creditPage.setCvvCard(DataHelper.getDigitsThree());
         creditPage.clickButtonContinue();
