@@ -14,13 +14,13 @@
 30 успешных тестов из 52. 22 тестов выявили баги приложения.
 
 ## Allure-репорт
-<img width="603" alt="28-09-2023 12-24-47" src="https://github.com/MarinaIurchenko/ProjectDiplom/assets/127327038/59102ba5-8e91-4206-9082-dd2c99de44bc">
+![Описание картинки](https://github.com/MarinaIurchenko/ProjectDiplom/assets/127327038/59102ba5-8e91-4206-9082-dd2c99de44bc)
 
 
 
 ## Gradle-репорт
-<img width="581" alt="28-09-2023 12-28-39" src="https://github.com/MarinaIurchenko/ProjectDiplom/assets/127327038/cd21f8fd-2cc8-4047-bdac-63001e6c09c9">
-<img width="576" alt="28-09-2023 12-31-05" src="https://github.com/MarinaIurchenko/ProjectDiplom/assets/127327038/dab7018a-dd74-478f-9644-2da0aa810677">
+![Описание картинки](https://github.com/MarinaIurchenko/ProjectDiplom/assets/127327038/cd21f8fd-2cc8-4047-bdac-63001e6c09c9)
+![Описание картинки](https://github.com/MarinaIurchenko/ProjectDiplom/assets/127327038/dab7018a-dd74-478f-9644-2da0aa810677)
 
 
 ## Общие рекомендации:
